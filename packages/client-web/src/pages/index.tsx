@@ -1,18 +1,51 @@
-import Head from 'next/head';
+import { useState } from 'react';
 
-function HomePage() {
+import { Toolbar } from '../components/Toolbar';
+import { TreeView } from '../components/TreeView';
+import { getPackage } from '../services/getPackage';
+
+import styles from './index.module.css';
+
+enum MODE {
+  SHOWING,
+  LOADING,
+}
+
+function IndexPage() {
+  const [mode, setMode] = useState<MODE>(MODE.SHOWING);
+  const [dependencies, setDependencies] = useState<Record<string, unknown> | null>(null);
+
+  const handleSelect = async (npmPackage: string) => {
+    setMode(MODE.LOADING);
+    setDependencies({});
+
+    try {
+      const dependencies = await getPackage(npmPackage);
+      setDependencies(dependencies ?? null);
+    } catch (error) {
+      console.error(error);
+    }
+
+    setMode(MODE.SHOWING);
+  };
+
   return (
     <>
-      <Head>
-        <title>NPM registry</title>
-      </Head>
-      <div className="container">
-        <h1 className="title">
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
+      <div className={styles.container}>
+        <Toolbar
+          isReadonly={mode === MODE.LOADING}
+          onSelect={handleSelect}
+        />
+        {mode === MODE.SHOWING ? (
+          <TreeView dependencies={dependencies} />
+        ) : (
+          <div className={styles.loader}>
+            Retrieving dependencies data, please wait ...
+          </div>
+        )}
       </div>
     </>
   );
 }
 
-export default HomePage;
+export default IndexPage;

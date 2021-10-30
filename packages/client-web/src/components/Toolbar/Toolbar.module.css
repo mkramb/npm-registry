@@ -1,0 +1,21 @@
+.toolbar {
+  display: flex;
+  background-color: lightblue;
+  border-bottom: 1px solid black;
+  padding: 1rem;
+  gap: 10px;
+}
+
+.toolbar input {
+  flex: 1;
+  line-height: 32px;
+  padding-left: 8px;
+  padding-right: 8px;
+}
+
+.toolbar button {
+  width: 200px;
+  background-color: black;
+  color: white;
+  border: 0;
+}
