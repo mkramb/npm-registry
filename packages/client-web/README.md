@@ -14,4 +14,5 @@ npm run start
 
 ```
 npm run build
+npx next start
 ```

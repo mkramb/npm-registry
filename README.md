@@ -25,7 +25,7 @@ To start locally, which uses docker (only) for mongodb:
 npm run start
 ```
 
-## Docs
+## Documentation
 
 - [Existing exercise documentation](./docs/EXERCISE.md)
-- [What is missing, to be production ready](./docs/TODO.md)
+- [TODO and improvements](./docs/TODO.md)
