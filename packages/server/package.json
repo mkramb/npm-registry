@@ -6,6 +6,7 @@
   "scripts": {
     "build": "shx rm -fr dist && tsc",
     "lint": "eslint --cache '{src,test}/**/*.ts'",
+    "prettier": "prettier \"src/**/*.{ts,json}\" --write",
     "start": "tsc-watch --onSuccess 'node -r source-map-support/register .'",
     "test": "jest"
   },

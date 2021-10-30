@@ -20,7 +20,9 @@ export const getPackage: RequestHandler = async function (req, res, next) {
   }, MAX_CONCURRENCY);
 
   try {
-    const npmPackage= await got(`https://registry.npmjs.org/${name}`).json<NPMPackage>();
+    const npmPackage = await got(
+      `https://registry.npmjs.org/${name}`
+    ).json<NPMPackage>();
     const dependencies = npmPackage?.versions?.[version]?.dependencies ?? {};
 
     dependencyTree = {
@@ -29,7 +31,7 @@ export const getPackage: RequestHandler = async function (req, res, next) {
       dependencies: {},
     };
 
-    for (const [ depName, depVersion ] of Object.entries(dependencies)) {
+    for (const [depName, depVersion] of Object.entries(dependencies)) {
       queue.push({
         name: depName,
         version: depVersion,
@@ -41,27 +43,34 @@ export const getPackage: RequestHandler = async function (req, res, next) {
       await queue.drain();
     }
 
-    return res
-      .status(200)
-      .json(dependencyTree);
+    return res.status(200).json(dependencyTree);
   } catch (error) {
     return next(error);
   }
 };
 
-async function getDependencies(task: RemotePackageRoot, done: async.ErrorCallback<Error>) {
-  const npmPackage = await got(`https://registry.npmjs.org/${task.name}`).json<NPMPackage>();
-  const selectedVersion = maxSatisfying(Object.keys(npmPackage.versions), task.version);
+async function getDependencies(
+  task: RemotePackageRoot,
+  done: async.ErrorCallback<Error>
+) {
+  const npmPackage = await got(
+    `https://registry.npmjs.org/${task.name}`
+  ).json<NPMPackage>();
+  const selectedVersion = maxSatisfying(
+    Object.keys(npmPackage.versions),
+    task.version
+  );
 
   if (selectedVersion) {
-    const newDependencies = npmPackage.versions[selectedVersion].dependencies ?? {};
+    const newDependencies =
+      npmPackage.versions[selectedVersion].dependencies ?? {};
 
     task.dependencies[task.name] = {
       version: selectedVersion,
       dependencies: {},
     };
 
-    for (const [ name, version ] of Object.entries(newDependencies)) {
+    for (const [name, version] of Object.entries(newDependencies)) {
       queue.push({
         name,
         version,
