@@ -8,9 +8,11 @@
     "clean": "lerna clean --yes && shx rm -fr node_modules",
     "postinstall": "lerna bootstrap --hoist",
     "lint": "lerna run lint --stream",
-    "prettier": "lerna run prettier --stream"
+    "prettier": "lerna run prettier --stream",
+    "start": "sh scripts/start.sh"
   },
   "devDependencies": {
+    "concurrently": "^6.2.0",
     "lerna": "^4.0.0",
     "shx": "^0.3.3"
   },
