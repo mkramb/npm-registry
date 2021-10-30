@@ -5,6 +5,7 @@ import { RequestHandler } from 'express';
 import { maxSatisfying } from 'semver';
 
 import { NPMPackage, RemotePackageRoot } from '../types';
+import { Logger } from 'pino';
 
 let queue: async.QueueObject<RemotePackageRoot>;
 let dependencyTree: RemotePackageRoot;
@@ -19,14 +20,15 @@ export const getPackage: RequestHandler = async function (
   res,
   next
 ) {
+  const { log } = req;
   const { name, version } = req.params;
 
-  req.log.info({
+  log.info({
     message: 'Started retrieving dependencies',
   });
 
   queue = async.queue<RemotePackageRoot>((task, done) => {
-    getDependencies(task, done);
+    getDependencies(task, done, log);
   }, MAX_CONCURRENCY);
 
   try {
@@ -34,7 +36,7 @@ export const getPackage: RequestHandler = async function (
       `https://registry.npmjs.org/${name}`
     ).json<NPMPackage>();
 
-    req.log.info({
+    log.info({
       message: 'Fetching root dependencies',
     });
 
@@ -47,7 +49,7 @@ export const getPackage: RequestHandler = async function (
     };
 
     for (const [depName, depVersion] of Object.entries(dependencies)) {
-      req.log.info({
+      log.info({
         message: `Adding work to queue for dependency: ${depName}`,
       });
 
@@ -62,7 +64,7 @@ export const getPackage: RequestHandler = async function (
       await queue.drain();
     }
 
-    req.log.info({
+    log.info({
       message: 'Retrieved all dependencies',
     });
 
@@ -74,7 +76,8 @@ export const getPackage: RequestHandler = async function (
 
 async function getDependencies(
   task: RemotePackageRoot,
-  done: async.ErrorCallback<Error>
+  done: async.ErrorCallback<Error>,
+  log: Logger
 ) {
   const npmPackage = await got(
     `https://registry.npmjs.org/${task.name}`
@@ -94,6 +97,10 @@ async function getDependencies(
     };
 
     for (const [name, version] of Object.entries(newDependencies)) {
+      log.info({
+        message: `Adding work to queue for dependency: ${name}`,
+      });
+
       queue.push({
         name,
         version,
