@@ -16,7 +16,10 @@
     "outDir": "dist",
 
     // Build source maps for easier debugging
-    "sourceMap": true
+    "sourceMap": true,
+
+    // Ease support for importing CommonJS modules
+    "esModuleInterop": true
   },
   "include": ["src"]
 }

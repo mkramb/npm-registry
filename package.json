@@ -5,8 +5,10 @@
   "description": "NPM registry",
   "author": "Mitja Kramberger <mitja.kramberger@gmail.com>",
   "scripts": {
+    "clean": "lerna clean --yes && shx rm -fr node_modules",
     "postinstall": "lerna bootstrap --hoist",
-    "clean": "lerna clean --yes && shx rm -fr node_modules"
+    "lint": "lerna run lint --stream",
+    "prettier": "lerna run prettier --stream"
   },
   "devDependencies": {
     "lerna": "^4.0.0",

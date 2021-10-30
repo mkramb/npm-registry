@@ -11,13 +11,20 @@
     "test": "jest"
   },
   "dependencies": {
+    "@godaddy/terminus": "^4.9.0",
     "async": "^3.2.0",
+    "cors": "^2.8.5",
     "express": "^4.17.1",
+    "express-pino-logger": "^6.0.0",
     "get-port": "^5.1.1",
-    "got": "^11.8.1"
+    "got": "^11.8.1",
+    "helmet": "^4.6.0",
+    "http-status-codes": "^2.1.4",
+    "uuid": "^8.3.2"
   },
   "devDependencies": {
     "@types/express": "^4.17.11",
+    "@types/express-pino-logger": "^4.0.2",
     "@types/jest": "^26.0.20",
     "@types/node": "^14.14.22",
     "@typescript-eslint/eslint-plugin": "^4.14.1",

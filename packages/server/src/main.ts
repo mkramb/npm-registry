@@ -1,19 +1,18 @@
-import * as assert from 'assert';
-import * as getPort from 'get-port';
 import { createApp } from './app';
+import getPort from 'get-port';
+
+const DEFAULT_PORT = 3000;
 
 async function main() {
   // Initialise the server framework and routing
-  const app = createApp();
+  const server = createApp();
 
-  const p = await getPort({ port: 3000 });
-  const server = app.listen(p, 'localhost', () => {
-    const addr = server.address();
-    assert(addr && typeof addr === 'object');
+  // Attempt to get the default port, otherwise choose for us
+  const port = await getPort({ port: DEFAULT_PORT });
 
-    const { address, port } = addr;
-    console.info(`Server listening on http://${address}:${port}`);
-  });
+  server.listen(port);
+
+  console.info(`Server listening at http://localhost:${port}`);
 }
 
 main();
