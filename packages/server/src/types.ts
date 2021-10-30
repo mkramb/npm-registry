@@ -1,3 +1,14 @@
+export type RemotePackageItem = {
+  version: string;
+  dependencies: Record<string, RemotePackageItem>;
+}
+
+export type RemotePackageRoot = {
+  name: string;
+  version: string;
+  dependencies: Record<string, RemotePackageItem>;
+}
+
 /**
  * The result of a package request against `https://registry.npmjs.org`. This is
  * a subset of the returned data, not a full representation, that contains
@@ -23,7 +34,7 @@
  *   }
  * }
  */
-export interface NPMPackage {
+ export interface NPMPackage {
   name: string;
   description: string;
   'dist-tags': {

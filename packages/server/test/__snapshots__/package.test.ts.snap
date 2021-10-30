@@ -1,0 +1,41 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`/package/:name/:version endpoint react 16.13.0 1`] = `
+Object {
+  "loose-envify": Object {
+    "dependencies": Object {
+      "js-tokens": Object {
+        "dependencies": Object {},
+        "version": "4.0.0",
+      },
+    },
+    "version": "1.4.0",
+  },
+  "object-assign": Object {
+    "dependencies": Object {},
+    "version": "4.1.1",
+  },
+  "prop-types": Object {
+    "dependencies": Object {
+      "loose-envify": Object {
+        "dependencies": Object {
+          "js-tokens": Object {
+            "dependencies": Object {},
+            "version": "4.0.0",
+          },
+        },
+        "version": "1.4.0",
+      },
+      "object-assign": Object {
+        "dependencies": Object {},
+        "version": "4.1.1",
+      },
+      "react-is": Object {
+        "dependencies": Object {},
+        "version": "16.13.1",
+      },
+    },
+    "version": "15.7.2",
+  },
+}
+`;
